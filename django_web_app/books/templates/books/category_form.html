@@ -1,0 +1,13 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+  <div class="container">
+    <h2>{% if form.instance.pk %}Sửa thể loại{% else %}Thêm thể loại{% endif %}</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Lưu</button>
+      <a href="{% url 'category_list' %}" class="btn btn-secondary">Hủy</a>
+    </form>
+  </div>
+{% endblock %}

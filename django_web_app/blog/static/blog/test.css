@@ -1,0 +1,191 @@
+/* CSS hiện tại của bạn */
+body {
+    background: #fafafa;
+    color: #333333;
+    margin-top: 0;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: #444444;
+  }
+  
+  ul {
+    margin: 0;
+  }
+  
+  .bg-steel {
+    background-color: #5f788a;
+  }
+  
+  .site-header .navbar-nav .nav-link {
+    color: #cbd5db;
+  }
+  
+  .site-header .navbar-nav .nav-link:hover {
+    color: #ffffff;
+  }
+  
+  .site-header .navbar-nav .nav-link.active {
+    font-weight: 500;
+  }
+  
+  .content-section {
+    background: #ffffff;
+    padding: 10px 20px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+    margin-bottom: 20px;
+  }
+  
+  .article-title {
+    color: #444444;
+  }
+  
+  a.article-title:hover {
+    color: #428bca;
+    text-decoration: none;
+  }
+  
+  .article-content {
+    white-space: pre-line;
+  }
+  
+  .article-img {
+    height: 65px;
+    width: 65px;
+    margin-right: 16px;
+  }
+  
+  .article-metadata {
+    padding-bottom: 1px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid #e3e3e3;
+  }
+  
+  .article-metadata a:hover {
+    color: #333;
+    text-decoration: none;
+  }
+  
+  .article-svg {
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
+  }
+  
+  .account-img {
+    height: 125px;
+    width: 125px;
+    margin-right: 20px;
+    margin-bottom: 16px;
+  }
+  
+  .account-heading {
+    font-size: 2.5rem;
+  }
+  
+  /* CSS mới để định vị phần tử đè lên ảnh */
+  .jumbotron {
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+    border-radius: 15px;
+    width: 30%;
+    margin: 10px;
+  }
+  
+  .jumbotron img {
+    width: 100%;
+    height: auto;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+  }
+  
+  .media.content-section {
+    /*position: absolute;*/
+    top: 10px;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    margin: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    padding: 15px;
+  }
+  
+  .post-title {
+    font-size: 1.5rem;
+    color: #0056b3;
+    margin-top: 0.5rem;
+    font-weight: bold;
+  }
+  
+  .post-subtitle {
+    font-size: 1rem;
+    color: #6c757d;
+  }
+  
+  .save-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+  
+  .save-button button {
+    border: none;
+    background: none;
+    color: #007bff;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .save-button button i {
+    margin-right: 0.5rem;
+  }
+  
+  /* New styles for horizontal layout */
+  .d-flex {
+    display: flex;
+  }
+  
+  .flex-wrap {
+    flex-wrap: wrap;
+  }
+  
+  .justify-content-around {
+    justify-content: space-around;
+  }
+  
+  /* Giúp phần card tự động điều chỉnh theo chiều rộng của màn hình */
+.card {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+/* Đảm bảo rằng phần nội dung sẽ không bị cắt bớt quá mức */
+.card-body {
+    overflow: hidden;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+/* Đảm bảo nội dung tiêu đề và bài viết sử dụng toàn bộ chiều rộng */
+.card-body h2 {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.card-body p {
+    text-align: justify;
+}
+
+/* Điều chỉnh chiều rộng của các phần tử nếu cần */
+@media (max-width: 768px) {
+    .card {
+        width: 100%; /* Cho phép card chiếm toàn bộ chiều rộng của màn hình nhỏ */
+    }
+}

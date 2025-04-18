@@ -1,0 +1,87 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'blog/table.css' %}">
+<link rel="stylesheet" href="{% static 'blog/search_box.css' %}">
+
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="fw-bold text-primary">📚 Danh sách Phiếu Mượn</h2>
+
+    <form id="searchform" action="{% url 'search_slip' %}" method="get" class="search-box">
+      <input type="text" name="q" type="text" value="{{ request.GET.q }}" placeholder="Search Slips..." />
+      <button type="button" onclick="searchform.submit()" class=" text-white my-color btn-primary"><i class="fa fa-search"></i></button>
+    </form>
+
+    <a href="{% url 'borrow_slip_create' %}" 
+      class="btn btn-outline-success big-center-btn">
+      ➕ Tạo phiếu mượn mới
+    </a>
+  </div>
+
+  {% if slips %}
+    <div class="table-responsive shadow-lg rounded">
+      <table class="table table-bordered table-striped align-middle text-center">
+        <thead class="table-dark">
+          <tr>
+            <th>#</th>
+          {% if request.user.role.name == "Librarian" %}
+            <th>Người mượn</th>
+          {% endif %}
+            <th>Ngày tạo</th>
+            <th>Hạn trả</th>
+            <th>Trạng thái</th>
+            <th>Đã mượn</th>
+            <th>Số sách</th>
+            <th>Hành động</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for slip in slips %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+            {% if request.user.role.name == "Librarian" %}
+              <td>{{ slip.user.get_full_name|default:slip.user.username }}</td>
+            {% endif %}
+              <td>{{ slip.created_at|date:"d/m/Y H:i" }}</td>
+              <td>{{ slip.due_date|date:"d/m/Y" }}</td>
+              <td>
+                {% if slip.submitted %}
+                  <span >✅ Đã gửi</span>
+                {% else %}
+                  <span >❌ Chưa gửi</span>
+                {% endif %}
+              </td>
+              <td>
+                {% if slip.is_borrowed %}
+                  <span >📦 Đã mượn</span>
+                {% else %}
+                  <span >🕒 Chưa mượn</span>
+                {% endif %}
+              </td>
+              <td>
+                <span >{{ slip.borrowed_books.count }}</span>
+              </td>
+              <td>
+                <a href="{% url 'borrow_slip_update_full' slip.id %}" class="btn btn-sm btn-warning">
+                  ✏️ Chi tiết
+                </a>
+                {% if request.user.role.name == "Librarian" %}
+                  <a href="{% url 'borrow_slip_delete' slip.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Bạn chắc chắn xoá?')">
+                    🗑️ Xoá
+                  </a>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="alert alert-info mt-4">
+      Chưa có phiếu mượn nào.
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

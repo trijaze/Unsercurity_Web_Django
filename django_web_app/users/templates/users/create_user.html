@@ -1,0 +1,7 @@
+<!-- templates/users/create_user.html -->
+<h2>Tạo người dùng</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Tạo</button>
+</form>

@@ -1,0 +1,77 @@
+{% extends "blog/base.html" %}
+{% load static %}
+{% block content %}
+  <h2>📄 Phiếu mượn: #{{ slip.id }}</h2>
+
+  <form method="post">
+    {% csrf_token %}
+
+    <table>
+      <tr><th>Người mượn: </th><td>{{ slip.user.get_full_name|default:slip.user.username }}</td></tr>
+      <tr><th>Ngày tạo: </th><td>{{ slip.created_at|date:"d/m/Y H:i" }}</td></tr>
+      <tr><th>Hạn trả: </th>
+        <td>
+          {% if is_editable %}  
+            {{ form.due_date }}
+          {% else %}
+            {{ slip.due_date }}
+          {% endif %}
+        </td>
+      </tr>
+      <tr><th>Trạng thái:</th><td>{{ slip.submitted|yesno:"Đã gửi,Chưa gửi" }}</td></tr>
+      <tr>
+          <th>Đã mượn:</th>
+          <td>
+            {% if is_editable %}
+              {{ form.is_borrowed }}
+            {% else %}
+              {{ slip.is_borrowed|yesno:"Đã mượn,Chưa mượn" }}
+            {% endif %}
+          </td>
+        </tr>
+    </table>
+
+    <h3>📚 Danh sách sách mượn</h3>
+    {{ formset.management_form }}
+    <table border="3" cellpadding="8" cellspacing="0" >
+      <thead>
+        <tr>
+          <th>Tên sách</th>
+          <th>Số lượng</th>
+          {% if is_editable %}<th>Xoá</th>{% endif %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for form in formset.forms %}
+          {{ form.id }} 
+          <tr>
+            <td>
+              {% if is_editable %}
+                {{ form.book }}
+              {% else %}
+                {{ form.instance.book.title }}
+              {% endif %}
+            </td>
+            <td>
+              {% if is_editable %}
+                {{ form.quantity }}
+              {% else %}
+                {{ form.instance.quantity }}
+              {% endif %}
+            </td>
+            {% if is_editable %}
+              <td>{{ form.DELETE }}</td>
+            {% endif %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    
+    <br>
+      <button class="btn btn-success" type="submit" name="save" value="1" >💾 Lưu thay đổi</button>
+      <a href="{% url 'borrow_slip_list' %}" class="btn btn-secondary" >⬅️ Quay lại danh sách</a>
+  </form>
+
+  
+  
+{% endblock %}

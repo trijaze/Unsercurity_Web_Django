@@ -1,0 +1,67 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+<div class="container mt-4" style="min-height: 20vh;">
+    <!-- Post Header -->
+    <div class="row mb-4">
+        <div class="col-lg-8 mx-auto">
+            <div class="media shadow-lg p-4 mb-4 bg-white rounded">
+                <!-- Author Avatar and Link -->
+                <a href="{{ object.author.profile.image.url }}" target="_blank">
+                    <img src="{{ object.author.profile.image.url }}" alt="{{ object.author }}" class="rounded-circle img-thumbnail img-fluid" style="width: 70px; height: 70px;">
+                </a>
+                <div class="media-body ml-3">
+                    <!-- Author and Date -->
+                    <h3 class="mt-0">
+                        <a href="{% url 'user-posts' object.author.username %}" class="text-dark">{{ object.author }}</a>
+                    </h3>
+                    <small class="text-muted">{{ object.date_upload|date:"F d, Y" }}</small>
+                </div>
+                <!-- Actions if user is the author -->
+                {% if object.author == user %}
+                    <div class="ml-3 d-flex align-items-center">
+                        <a href="{% url 'post-update' object.id %}" class="btn btn-secondary btn-sm mr-2">Update</a>
+                        <a href="{% url 'post-delete' object.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Post Content -->
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <article class="shadow-lg bg-white p-4 rounded">
+                <h2 class="post-title">{{ object.title }}</h2>
+                <hr>
+
+                <!-- Display post content -->
+                <div class="post-content">
+                    <p>{{ object.content }}</p>
+                </div>
+
+                <!-- Display file (if exists) -->
+                {% if object.file %}
+                    <div class="mt-4">
+                        {% if object.extension == '.jpg' or object.extension == 'jpeg' or object.extension == '.png' %}
+                            <a href="{{ object.file.url }}" download>
+                                <img src="{{ object.file.url }}" alt="Post Image" class="img-fluid">
+                            </a>
+                            <h5 class="mt-2"><a href="{{ object.file.url }}" download>{{ object.file }}</a></h5>
+                        {% elif object.extension == '.mp4' %}
+                            <div class="embed-responsive embed-responsive-16by9">
+                                <video id="video-1_html_api" class="vjs-tech" preload="auto" controls>
+                                    <source src="{{ object.file.url }}" type="video/mp4">
+                                </video>
+                            </div>
+                            <a href="{{ object.file.url }}" download class="mt-2">{{ object.file }}</a>
+                        {% else %}
+                            <a href="{{ object.file.url }}" download class="text-dark">{{ object.file }}</a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </article>
+        </div>
+    </div>
+</div>
+{% endblock content %}

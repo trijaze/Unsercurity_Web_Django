@@ -1,0 +1,48 @@
+{% extends "blog/base.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'blog/table.css' %}">
+<link rel="stylesheet" href="{% static 'blog/search_box.css' %}">
+
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="fw-bold text-primary">Danh sách thể loại</h2>
+
+      <form id="searchform" action="{% url 'search_category' %}" method="get" class="search-box">
+        <input type="text" name="q" type="text" value="{{ request.GET.q }}" placeholder="Tìm kiếm thể loại..." />
+        <button type="button" onclick="searchform.submit()" class=" text-white my-color btn-primary"><i class="fa fa-search"></i></button>
+      </form>
+
+      <a href="{% url 'category_add' %}" class="btn btn-outline-success big-center-btn">Thêm thể loại mới</a>
+    </div>
+  </div>
+
+  <div class="table-responsive shadow-lg rounded">
+    <table class="table table-bordered table-striped align-middle text-center">
+      <thead class="table-dark">
+        <tr>
+          <th>Tên thể loại</th>
+          <th>Mô tả</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for category in categories %}
+        <tr>
+          <td>{{ category.name }}</td>
+          <td>{{ category.description }}</td>
+          <td>
+            <a href="{% url 'category_edit' category.id %}" class="btn btn-sm btn-warning" >Sửa </a>
+            <a href="{% url 'category_delete' category.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Bạn chắc chắn muốn xóa?')">Xóa</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="3" class="text-center">Chưa có thể loại nào.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

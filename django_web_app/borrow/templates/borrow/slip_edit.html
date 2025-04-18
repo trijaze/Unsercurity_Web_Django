@@ -1,0 +1,41 @@
+{% extends "blog/base.html" %}
+{% load static %}
+{% block content %}
+<h3>Phiếu mượn</h3>
+<table class="table table-bordered" border="3" cellpadding="8" cellspacing="0">
+  <thead>
+    <tr>
+      <th>Tên sách</th>
+      <th>Số lượng</th>
+      {% if is_editable %}<th>Xoá</th>{% endif %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for book in books %}
+    <tr>
+      <td>
+        
+          {{ book.book.title }}
+      </td>
+      <td>
+          {{ book.quantity }}
+        
+      </td>
+      {% endfor %}
+    </tr>
+    <!--
+    <ul>
+      {% for book in books %}
+        <li>{{ book.book.title }} - SL: {{ book.quantity }}</li>
+      {% endfor %}
+    </ul>
+    --->
+  </tbody>
+</table>
+
+<a href="{% url 'borrowed_book_add' slip.id %}" class="btn btn-success mb-3" >Thêm sách</a>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit" name="submit">Gửi phiếu mượn</button>
+</form>
+{% endblock %}
