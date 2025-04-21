@@ -44,12 +44,12 @@ def search_category(request):
     
     return render(request, 'books/category_list.html', context)
 
-@user_passes_test(is_librarian)
+#@user_passes_test(is_librarian)
 def book_list(request):
     books = Book.objects.all()
     return render(request, 'books/book_list.html', {'books': books})
 
-@user_passes_test(is_librarian)
+#@user_passes_test(is_librarian)
 def book_add(request):
     if request.method == 'POST':
         form = BookForm(request.POST)
@@ -60,7 +60,7 @@ def book_add(request):
         form = BookForm()
     return render(request, 'books/book_form.html', {'form': form})
 
-@user_passes_test(is_librarian)
+#@user_passes_test(is_librarian)
 def book_edit(request, pk):
     book = get_object_or_404(Book, pk=pk)
     if request.method == "POST":
@@ -72,13 +72,13 @@ def book_edit(request, pk):
         form = BookForm(instance=book)
     return render(request, 'books/book_form.html', {'form': form})
 
-@user_passes_test(is_librarian)
+#@user_passes_test(is_librarian)
 def book_delete(request, pk):
     book = get_object_or_404(Book, pk=pk)
     book.delete()
     return redirect('book_list')
 
-@user_passes_test(is_librarian)
+#@user_passes_test(is_librarian)
 def category_edit(request, pk):
     category = get_object_or_404(Category, pk=pk)
     if request.method == 'POST':
@@ -91,7 +91,7 @@ def category_edit(request, pk):
     return render(request, 'books/category_form.html', {'form': form})
 
 
-@user_passes_test(is_librarian)
+#@user_passes_test(is_librarian)
 def category_add(request):
     if request.method == 'POST':
         form = CategoryForm(request.POST)

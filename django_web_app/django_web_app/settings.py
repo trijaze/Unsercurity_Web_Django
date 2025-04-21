@@ -136,6 +136,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT= os.path.join(BASE_DIR, 'static'),
 
 
+CSRF_COOKIE_SECURE = False
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
