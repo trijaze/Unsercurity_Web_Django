@@ -22,7 +22,7 @@ def is_librarian(user):
     return hasattr(user, 'role') and user.role.name == 'Librarian'
 
 def search_slip(request):
-    q = request.GET.get('q', '')
+    q = request.GET.get('q_slip', '')
 
     with connection.cursor() as cursor:
         try:

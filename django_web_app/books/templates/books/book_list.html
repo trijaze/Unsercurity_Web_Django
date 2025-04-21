@@ -11,7 +11,7 @@
     <h2 class="fw-bold text-primary">Book List</h2>
     
     <form id="searchform" action="{% url 'search_book' %}" method="get" class="search-box">
-      <input type="text" name="q" type="text" value="{{ request.GET.q }}" placeholder="Search Books..." />
+      <input type="text" name="q_book" type="text" value="{{ request.GET.q }}" placeholder="Search Books..." />
       <button type="button" onclick="searchform.submit()" class=" text-white my-color btn-primary"><i class="fa fa-search"></i></button>
     </form>
 

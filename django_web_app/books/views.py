@@ -13,7 +13,7 @@ def is_librarian(user):
     return hasattr(user, 'role') and user.role.name == 'Librarian'
 
 def search_book(request):
-    query = request.GET.get('q')
+    query = request.GET.get('q_book')
 
     try:
         query = validate_query_param(query)
@@ -33,7 +33,7 @@ def search_book(request):
 
 
 def search_category(request):
-    query = request.GET.get('q')
+    query = request.GET.get('q_category')
     result = Category.objects.filter(
         Q(name__icontains=query) | Q(description__icontains=query)
     )

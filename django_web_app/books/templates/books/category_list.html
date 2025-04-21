@@ -10,7 +10,7 @@
       <h2 class="fw-bold text-primary">Danh sách thể loại</h2>
 
       <form id="searchform" action="{% url 'search_category' %}" method="get" class="search-box">
-        <input type="text" name="q" type="text" value="{{ request.GET.q }}" placeholder="Tìm kiếm thể loại..." />
+        <input type="text" name="q_category" type="text" value="{{ request.GET.q }}" placeholder="Tìm kiếm thể loại..." />
         <button type="button" onclick="searchform.submit()" class=" text-white my-color btn-primary"><i class="fa fa-search"></i></button>
       </form>
 

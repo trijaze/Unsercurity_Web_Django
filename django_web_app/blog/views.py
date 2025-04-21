@@ -21,7 +21,7 @@ def home(request):
     return render(request, 'blog/home.html', context)
 
 def search(request):
-    query = request.GET.get('q')
+    query = request.GET.get('q_blog')
     result = Post.objects.filter(
         Q(title__icontains=query) | Q(author__username__icontains=query) | Q(content__icontains=query)
     )

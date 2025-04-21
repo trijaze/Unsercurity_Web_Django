@@ -52,7 +52,7 @@
                   
                   <!------{{ request.get_host }}/blog/search/-->
                   <form id="searchform" action="{% url 'search' %}" method="get">
-                    <input type="text" name="q" type="text" value="{{ request.GET.q }}" placeholder="Search Here..." />
+                    <input type="text" name="q_blog" type="text" value="{{ request.GET.q }}" placeholder="Search Here..." />
                     <button type="button" onclick="searchform.submit()" class=" text-white my-color btn-primary"><i class="fa fa-search"></i></button>
                   </form>
               
