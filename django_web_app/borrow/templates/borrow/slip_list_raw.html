@@ -1,0 +1,25 @@
+{% if query %}
+  <div class="alert alert-danger">
+    <strong>⚠️ Truy vấn SQL injection đang dùng:</strong><br>
+    <code>{{ query }}</code>
+  </div>
+{% endif %}
+
+{% if slips %}
+  <div class="mb-3">
+    <strong>🛠️ Thông tin chi tiết từng slip (debug):</strong>
+    <ul class="list-group mt-2">
+      {% for slip in slips %}
+        <li class="list-group-item">
+          <strong>ID:</strong> {{ slip.id }} |
+          <strong>User:</strong> {{ slip.user.username }} (ID: {{ slip.user.id }}) |
+          <strong>Ngày tạo:</strong> {{ slip.created_at }} |
+          <strong>Hạn trả:</strong> {{ slip.due_date }} |
+          <strong>Trạng thái:</strong> {{ slip.submitted }} |
+          <strong>Đã mượn:</strong> {{ slip.is_borrowed }} |
+          <strong>Sách mượn:</strong> {{ slip.borrowed_books.count }}
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}

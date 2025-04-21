@@ -22,17 +22,24 @@ def is_librarian(user):
     return hasattr(user, 'role') and user.role.name == 'Librarian'
 
 def search_slip(request):
-    q = request.GET.get('q_slip', '')
+    query = request.GET.get('q_slip', '')
 
-    with connection.cursor() as cursor:
-        try:
-            cursor.execute(f"SELECT * FROM borrow_borrowslip WHERE id = {q}")
-            rows = cursor.fetchall()
-        except Exception as e:
-            rows = []
-            print("SQL Error:", e)
+    # WARNING: thực hiện raw SQL từ input không kiểm tra, dễ gây SQL Injection
+    sql = f"SELECT * FROM borrow_borrowslip WHERE id = '{query}'"
+    print("🔍 Executing SQL:", sql)
 
-    return render(request, 'borrow/slip_list.html', {'slips': rows})
+    try:
+        result = BorrowSlip.objects.raw(sql)
+    except Exception as e:
+        result = []
+        print("Lỗi thực thi SQL:", e)
+
+    context = {
+        'slips': result,
+        'query': query,
+    }
+    return render(request, 'borrow/slip_list.html', context)
+
 
 @user_passes_test(is_librarian)
 def borrow_slip_delete(request, slip_id):

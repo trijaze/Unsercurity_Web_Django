@@ -9,12 +9,13 @@
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h2 class="fw-bold text-primary">📚 Danh sách Phiếu Mượn</h2>
 
-    <form id="searchform_slip" action="{% url 'search_slip' %}" method="get" class="search-box">
-      <input type="text" name="q_slip" placeholder="Search Slips..." />
-      <button type="submit" class="text-white my-color btn-primary"><i class="fa fa-search"></i></button>
+    <form id="searchform" action="{% url 'search_slip' %}" method="get" class="search-box">
+      <input type="text" name="q_slip" type="text" value="{{ request.GET.q }}" placeholder="Search Slips..." />
+      <button type="button" onclick="searchform.submit()" class=" text-white my-color btn-primary"><i class="fa fa-search"></i></button>
     </form>
 
-    <a href="{% url 'borrow_slip_create' %}" class="btn btn-outline-success big-center-btn">
+    <a href="{% url 'borrow_slip_create' %}" 
+      class="btn btn-outline-success big-center-btn">
       ➕ Tạo phiếu mượn mới
     </a>
   </div>
@@ -25,6 +26,9 @@
         <thead class="table-dark">
           <tr>
             <th>#</th>
+          {% if request.user.role.name == "Librarian" %}
+            <th>Người mượn</th>
+          {% endif %}
             <th>Ngày tạo</th>
             <th>Hạn trả</th>
             <th>Trạng thái</th>
