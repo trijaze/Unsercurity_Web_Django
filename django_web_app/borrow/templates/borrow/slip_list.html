@@ -10,12 +10,11 @@
     <h2 class="fw-bold text-primary">📚 Danh sách Phiếu Mượn</h2>
 
     <form id="searchform" action="{% url 'search_slip' %}" method="get" class="search-box">
-      <input type="text" name="q" type="text" value="{{ request.GET.q }}" placeholder="Search Slips..." />
-      <button type="button" onclick="searchform.submit()" class=" text-white my-color btn-primary"><i class="fa fa-search"></i></button>
+      <input type="text" name="q" placeholder="Search Slips..." />
+      <button type="submit" class="text-white my-color btn-primary"><i class="fa fa-search"></i></button>
     </form>
 
-    <a href="{% url 'borrow_slip_create' %}" 
-      class="btn btn-outline-success big-center-btn">
+    <a href="{% url 'borrow_slip_create' %}" class="btn btn-outline-success big-center-btn">
       ➕ Tạo phiếu mượn mới
     </a>
   </div>
@@ -26,9 +25,6 @@
         <thead class="table-dark">
           <tr>
             <th>#</th>
-          {% if request.user.role.name == "Librarian" %}
-            <th>Người mượn</th>
-          {% endif %}
             <th>Ngày tạo</th>
             <th>Hạn trả</th>
             <th>Trạng thái</th>
@@ -41,34 +37,31 @@
           {% for slip in slips %}
             <tr>
               <td>{{ forloop.counter }}</td>
-            {% if request.user.role.name == "Librarian" %}
-              <td>{{ slip.user.get_full_name|default:slip.user.username }}</td>
-            {% endif %}
-              <td>{{ slip.created_at|date:"d/m/Y H:i" }}</td>
-              <td>{{ slip.due_date|date:"d/m/Y" }}</td>
+              <td>{{ slip.0|date:"d/m/Y H:i" }}</td>
+              <td>{{ slip.1|date:"d/m/Y" }}</td>
               <td>
-                {% if slip.submitted %}
-                  <span >✅ Đã gửi</span>
+                {% if slip.3 %}
+                  <span>✅ Đã gửi</span>
                 {% else %}
-                  <span >❌ Chưa gửi</span>
+                  <span>❌ Chưa gửi</span>
                 {% endif %}
               </td>
               <td>
-                {% if slip.is_borrowed %}
-                  <span >📦 Đã mượn</span>
+                {% if slip.4 %}
+                  <span>📦 Đã mượn</span>
                 {% else %}
-                  <span >🕒 Chưa mượn</span>
+                  <span>🕒 Chưa mượn</span>
                 {% endif %}
               </td>
               <td>
-                <span >{{ slip.borrowed_books.count }}</span>
+                <span>{{ slip.5 }}</span>
               </td>
               <td>
-                <a href="{% url 'borrow_slip_update_full' slip.id %}" class="btn btn-sm btn-warning">
+                <a href="{% url 'borrow_slip_update_full' slip.0 %}" class="btn btn-sm btn-warning">
                   ✏️ Chi tiết
                 </a>
                 {% if request.user.role.name == "Librarian" %}
-                  <a href="{% url 'borrow_slip_delete' slip.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Bạn chắc chắn xoá?')">
+                  <a href="{% url 'borrow_slip_delete' slip.0 %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Bạn chắc chắn xoá?')">
                     🗑️ Xoá
                   </a>
                 {% endif %}

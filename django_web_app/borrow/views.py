@@ -6,6 +6,10 @@ from django.forms import inlineformset_factory
 from django.utils import timezone
 from datetime import timedelta
 from django.db.models import Q
+from django.db import connection
+from django.http import HttpResponse
+from borrow.models import BorrowSlip
+
 
 
 
@@ -18,17 +22,17 @@ def is_librarian(user):
     return hasattr(user, 'role') and user.role.name == 'Librarian'
 
 def search_slip(request):
-    query = request.GET.get('q')
-    result = BorrowSlip.objects.filter(
-        Q(user__username__icontains=query) | Q(created_at__icontains=query) | Q(due_date__icontains=query) | Q(submitted__icontains=query) | Q(is_borrowed__icontains=query)
-    )
-    context = {
-        'slips': result,
-        'query': query,
-    }
-    
-    return render(request, 'borrow/slip_list.html', context)
+    q = request.GET.get('q', '')
 
+    with connection.cursor() as cursor:
+        try:
+            cursor.execute(f"SELECT * FROM borrow_borrowslip WHERE id = {q}")
+            rows = cursor.fetchall()
+        except Exception as e:
+            rows = []
+            print("SQL Error:", e)
+
+    return render(request, 'borrow/slip_list.html', {'slips': rows})
 
 @user_passes_test(is_librarian)
 def borrow_slip_delete(request, slip_id):

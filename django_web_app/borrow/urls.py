@@ -8,5 +8,5 @@ urlpatterns = [
     path('borrow-slips/', views.borrow_slip_list, name='borrow_slip_list'),
     path('borrow/<int:slip_id>/update/', views.borrow_slip_update_full, name='borrow_slip_update_full'),
     path('borrow-slips/<int:slip_id>/delete/', views.borrow_slip_delete, name='borrow_slip_delete'),
-    path('borrow-slips/search/',views.search_slip,name='search_slip' ),
+    path('borrow-slips/search/', views.search_slip, name='search_slip'),
 ]
