@@ -9,6 +9,8 @@ from django.db.models import Q
 from django.db import connection
 from django.http import HttpResponse
 from borrow.models import BorrowSlip
+from django.utils.html import strip_tags
+
 
 
 
@@ -23,6 +25,13 @@ def is_librarian(user):
 
 def search_slip(request):
     query = request.GET.get('q_slip', '')
+
+    try:
+        cleaned_query = strip_tags(query)
+    except Exception as e:
+        print("Lỗi strip_tags:", e)
+        return HttpResponse("Lỗi khi xử lý HTML input!", status=500)
+    sql = f"SELECT * FROM borrow_borrowslip WHERE id = '{cleaned_query}'"
 
     # WARNING: thực hiện raw SQL từ input không kiểm tra, dễ gây SQL Injection
     sql = f"SELECT * FROM borrow_borrowslip WHERE id = '{query}'"
@@ -48,7 +57,7 @@ def borrow_slip_delete(request, slip_id):
     return redirect('borrow_slip_list')
 
 # Danh sách phiếu mượn của người dùng
-@user_passes_test(is_student_or_staff)
+#@user_passes_test(is_student_or_staff)
 def borrow_slip_list(request):
     slips = BorrowSlip.objects.filter(user=request.user)
     if request.user.role.name == 'Librarian':
@@ -105,7 +114,7 @@ def borrowed_book_add(request, slip_id):
         return render(request, 'borrow/book_form.html', {'form': form, 'slip_id': slip.id})
     
 
-@user_passes_test(is_student_or_staff)
+#@user_passes_test(is_student_or_staff)
 def borrow_slip_update_full(request, slip_id):
     slip = get_object_or_404(BorrowSlip, id=slip_id)
 
@@ -114,12 +123,22 @@ def borrow_slip_update_full(request, slip_id):
     BorrowedBookFormSet = inlineformset_factory(
         BorrowSlip, BorrowedBook, form=BorrowedBookForm, extra=0, can_delete=is_editable
     )
+
+    # 👇 MÔ PHỎNG LỖ HỔNG: xử lý strip_tags() trên dữ liệu đầu vào chưa kiểm tra
+    payload = request.GET.get("payload", "")
+    if payload:
+        try:
+            # Đây là nơi lỗi xảy ra nếu payload có <a><a><a><a>... sâu lồng
+            clean = strip_tags(payload)
+            print("Kết quả strip_tags:", clean[:100])
+        except Exception as e:
+            print("Lỗi khi gọi strip_tags():", e)
+            return HttpResponse("Lỗi trong strip_tags()", status=500)
+
     if request.method == 'POST' and is_editable:
         form = BorrowSlipForm(request.POST, instance=slip)
         formset = BorrowedBookFormSet(request.POST, instance=slip)
         if form.is_valid() and formset.is_valid():
-            #form.save()
-            #formset.save()        
             slip = form.save(commit=True)
 
             if 'submit' in request.POST:
