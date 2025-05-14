@@ -28,7 +28,7 @@ SECRET_KEY = '@5&-q%^o=@mb@=@e%b9yz^b#l-2)w&_s0ick#=wy3kw36$z($g'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -52,7 +52,6 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -136,7 +135,13 @@ STATIC_URL = '/static/'
 STATIC_ROOT= os.path.join(BASE_DIR, 'static'),
 
 
+# Lỗi cấu hình cryptography
+SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = False
+SECURE_SSL_REDIRECT = False
+
+
+SESSION_COOKIE_HTTPONLY = False
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -147,3 +152,6 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'blog-home'
 LOGIN_URL = 'login'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTHENTICATION_BACKENDS = ['users.backends.PlainTextBackend']
+

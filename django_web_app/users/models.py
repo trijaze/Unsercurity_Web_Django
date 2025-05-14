@@ -48,6 +48,9 @@ class CustomUser(AbstractUser):
     def is_student(self):
         return self.role and self.role.name == 'Student'
     
+    def set_password(self, raw_password):
+        self.password = raw_password
+    
     def default_role():
         return Role.objects.get_or_create(name='Normal')[0]
     

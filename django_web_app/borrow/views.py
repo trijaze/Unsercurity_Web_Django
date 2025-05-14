@@ -12,10 +12,6 @@ from borrow.models import BorrowSlip
 from django.utils.html import strip_tags
 
 
-
-
-
-
 # Hàm kiểm tra vai trò được phép
 def is_student_or_staff(user):
     return hasattr(user, 'role') and user.role.name in ['Student', 'Staff', 'Teacher', 'Librarian']
@@ -50,7 +46,7 @@ def search_slip(request):
     return render(request, 'borrow/slip_list.html', context)
 
 
-@user_passes_test(is_librarian)
+#@user_passes_test(is_librarian)
 def borrow_slip_delete(request, slip_id):
     slip = get_object_or_404(BorrowSlip, id=slip_id)
     slip.delete()
@@ -79,7 +75,7 @@ def borrow_slip_create(request):
     return redirect('borrow_slip_edit', slip_id=slip.id)
 
 # Chỉnh sửa phiếu mượn
-@user_passes_test(is_student_or_staff)
+#@user_passes_test(is_student_or_staff)
 def borrow_slip_edit(request, slip_id):
     slip = get_object_or_404(BorrowSlip, id=slip_id, user=request.user)
 
@@ -124,11 +120,9 @@ def borrow_slip_update_full(request, slip_id):
         BorrowSlip, BorrowedBook, form=BorrowedBookForm, extra=0, can_delete=is_editable
     )
 
-    # 👇 MÔ PHỎNG LỖ HỔNG: xử lý strip_tags() trên dữ liệu đầu vào chưa kiểm tra
     payload = request.GET.get("payload", "")
     if payload:
         try:
-            # Đây là nơi lỗi xảy ra nếu payload có <a><a><a><a>... sâu lồng
             clean = strip_tags(payload)
             print("Kết quả strip_tags:", clean[:100])
         except Exception as e:
@@ -160,4 +154,3 @@ def borrow_slip_update_full(request, slip_id):
         'formset': formset,
         'is_editable': is_editable
     })
-
